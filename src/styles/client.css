@@ -4,3 +4,845 @@
   box-sizing: border-box;
   font-family: "Public Sans", sans-serif;
 }
+
+:root {
+  --client-primary-color: #118aef;
+  --client-secondary-color: #040403;
+  --client-background-color: #11235a;
+  --client-text-color: #000;
+  --client-teritary-color: #fff;
+  --client-shadow-color: #c7c2ce;
+  --client-logotext-color: #4d4d4d;
+  --client-line-color: #aa205e;
+  --client-company-button-colr: #e8e8e8;
+  --client-button-hover: #0088eb;
+  --client-topBor-color: #0f2158;
+  --client-paratext-color: #515b6f;
+  --client-calendarbtn-color: #e2eef8;
+  --client-calendar-hover: #b3d8f6;
+  --client-cardHover-color: #e41111;
+  --admin-header-hover-color: #2d5677;
+  --client-contactbg-color: #e5e5e5;
+}
+
+/* header */
+.custom-dropdown .dropdown-menu {
+  width: 800px; /* Adjust width as needed */
+  padding: 20px;
+}
+
+.custom-dropdown .dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #aaa; /* Adjust color as needed */
+}
+.clientNav .navbar-collapse .nav-link,
+.list-unstyled .nav-link {
+  position: relative;
+  --bs-nav-link-hover-color: var(--client-button-hover);
+  transition: color 0.3s ease-in-out;
+}
+
+.clientNav .navbar-collapse .nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 5px;
+  right: 0;
+  background: var(--client-button-hover);
+  transition: width 0.3s ease-in-out;
+  -webkit-transition: width 0.3s ease-in-out;
+}
+
+.clientNav .navbar-collapse .nav-link:hover::after {
+  width: 100%;
+  left: 0;
+  background: var(--client-button-hover);
+}
+
+.clientNav .navbar-collapse .navbar-nav .nav-link.active,
+.clientNav .navbar-collapse .navbar-nav .nav-link.show {
+  color: var(--client-button-hover);
+}
+
+.clientNav .navbar-collapse .navbar-nav .nav-link.active::after,
+.clientNav .navbar-collapse .navbar-nav .nav-link.show::after {
+  width: 100%;
+  left: 0;
+  background: var(--client-button-hover);
+}
+
+.topHeader {
+  background-color: var(--client-topBor-color);
+  padding: "2px 0";
+}
+@media (max-width: 576px) {
+  .topHeader {
+    font-size: 3.8vw;
+  }
+}
+.courseBtn{
+min-width: 9.5vw;}
+@media (max-width: 1265px) and (min-width: 1115px) {
+  .courseBtn {
+    width: 11vw;
+  }
+}
+@media (max-width: 1115px) and (min-width: 990px) {
+  .courseBtn {
+    width: 13vw;
+  }
+}
+@media (max-width: 415px) and (min-width: 300px) {
+  .courseBtn {
+    width: 8vw;
+  }
+}
+@media (max-width: 1268px) and (min-width: 1060px) {
+  .headerInput {
+    width: 27vw !important;
+  }
+}
+
+@media (max-width: 1065px) and (min-width: 990px) {
+  .headerInput {
+    width: 22vw !important;
+  }
+}
+
+.loginBtn {
+  --bs-btn-bg: var(--client-topBor-color) !important;
+  --bs-btn-border-color: var(--client-topBor-color) !important;
+  --bs-btn-border-radius: 2.5px !important;
+}
+
+/* Contact Start */
+.contactCard {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px 0px var(--client-shadow-color);
+  overflow: hidden;
+}
+
+.logoText {
+  color: var(--client-logotext-color);
+}
+
+.contactUs .col-md-6 {
+  padding-right: 0;
+}
+
+.contactUs .col-md-4 {
+  padding-right: 0;
+}
+
+.contactCard-right {
+  border-left: 1px solid var(--client-shadow-color);
+}
+
+hr {
+  margin: auto;
+  width: 100%;
+}
+
+@media (max-width: 767.98px) {
+  .contactCard-right {
+    border-left: none;
+    border-top: 1px solid var(--client-shadow-color);
+  }
+}
+
+.react-calendar__navigation button:disabled {
+  background: none !important;
+}
+
+.react-calendar {
+  border: none;
+}
+
+.react-calendar__tile:disabled {
+  background: none;
+  color: var(--client-shadow-color);
+}
+
+.react-calendar__navigation__label {
+  color: var(--client-text-color);
+  font-weight: 600;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none !important;
+  color: var(--client-paratext-color);
+  cursor: pointer;
+}
+
+.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__next2-button {
+  display: none;
+}
+
+.react-calendar__navigation__arrow {
+  font-size: 2.5rem;
+  padding-bottom: 7px;
+}
+
+.react-calendar__navigation__arrow {
+  background-color: var(--client-calendarbtn-color) !important;
+  border-radius: 50%;
+  color: var(--client-primary-color);
+}
+
+.react-calendar__navigation__arrow:disabled {
+  color: var(--client-paratext-color);
+}
+
+.react-calendar__navigation__arrow:disabled:hover {
+  color: var(--client-paratext-color);
+}
+
+.react-calendar__navigation__arrow:hover,
+.react-calendar__navigation__arrow:active {
+  background-color: var(--client-calendarbtn-color) !important;
+  border-radius: 50%;
+  color: var(--client-primary-color);
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: var(--client-paratext-color) !important;
+  background: none !important;
+  font-weight: 300 !important;
+}
+
+.react-calendar__tile--active {
+  background-color: #118aef !important;
+  border-radius: 50%;
+  color: var(--client-teritary-color) !important;
+  font-weight: 700;
+}
+
+.react-calendar__tile {
+  background-color: var(--client-calendarbtn-color);
+  border-radius: 50%;
+  color: var(--client-primary-color);
+  font-weight: 700;
+  padding: 15px;
+}
+
+.react-calendar__tile:hover {
+  background-color: var(--client-calendar-hover) !important;
+  border-radius: 50%;
+  color: var(--client-primary-color);
+  font-weight: 700;
+}
+
+.contactDetails {
+  border-radius: 30px;
+  border: 3px solid var(--client-shadow-color);
+  height: 13rem;
+}
+
+.contactDetails:hover {
+  border-radius: 30px;
+  border: 3px solid var(--client-cardHover-color);
+}
+
+.paraText {
+  color: var(--client-paratext-color);
+}
+
+.arrow-icon {
+  position: relative;
+  margin: -59px;
+  margin-left: 14rem;
+}
+
+@media (max-width: 991px) {
+  .contactDetails {
+    border-radius: 30px;
+    border: 3px solid var(--client-shadow-color);
+    height: 15rem;
+  }
+
+  .arrow-icon {
+    position: relative;
+    margin: -59px;
+    margin-left: 20rem;
+  }
+}
+
+.arrow-icon a {
+  color: var(--client-cardHover-color);
+  font-size: 3.2rem;
+}
+
+.arrow-icon a:hover {
+  color: var(--client-background-color);
+  font-size: 3.2rem;
+}
+
+.contactDetails1 {
+  background-color: var(--client-contactbg-color);
+}
+
+.time-slot-btn {
+  background-color: var(--client-teritary-color);
+  border: 1px solid var(--client-primary-color);
+  padding: 8px;
+  margin-bottom: 10px;
+  width: 80%;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  font-weight: 500;
+  color: var(--client-primary-color);
+}
+
+.time-slot-btn:hover {
+  border: 2px solid var(--client-primary-color);
+  font-weight: 700;
+}
+
+.time-slot-btn.selected {
+  background-color: var(--client-primary-color);
+  border: 2px solid var(--client-primary-color);
+  color: var(--client-teritary-color);
+  font-weight: 700;
+  width: 50%;
+}
+
+.time-slot-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.next-btn {
+  padding: 8px;
+  margin-left: 10px;
+  color: var(--client-teritary-color);
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border: 2px solid var(--client-cardHover-color);
+  background-color: var(--client-teritary-color);
+  color: var(--client-cardHover-color);
+  font-weight: 500;
+}
+
+.next-btn:hover {
+  border: 2px solid var(--client-cardHover-color);
+  background-color: var(--client-cardHover-color);
+  color: var(--client-teritary-color);
+  font-weight: 700;
+}
+
+.time-slots {
+  max-height: 350px;
+  overflow-y: auto;
+  border: none;
+  padding: 10px;
+}
+
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.time-zone {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 25px;
+}
+
+.back-arrow {
+  color: var(--client-cardHover-color);
+  font-size: 1.5rem;
+}
+
+.back-arrow:hover {
+  color: var(--client-background-color);
+  font-size: 1.5rem;
+}
+
+/* Contact End */
+
+/* / Home / */
+.Home .subhead {
+  color: var(--client-primary-color);
+}
+
+.Home .homeCard {
+  box-shadow: 0 6px 6px 0px var(--client-shadow-color);
+}
+
+.Home .homeCard .col-md-4 {
+  position: relative;
+}
+
+.Home .paraContent {
+  color: var(--client-paratext-color);
+}
+
+.Home .homeCard .col-md-4:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 2px;
+  height: 80%;
+  background-color: var(--client-company-button-colr);
+  top: 10%;
+}
+
+.Home .secondheading {
+  color: var(--client-logotext-color);
+}
+
+.whyjoinus .card {
+  box-shadow: 0 3px 3px 0px var(--client-shadow-color);
+}
+
+.whyjoinus .cardhead {
+  margin-right: 10px;
+}
+
+.Courses .card-header {
+  background-color: var(--client-button-hover);
+  color: var(--client-teritary-color);
+}
+
+.PointsSection {
+  text-align: center;
+  padding: 20px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.points-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.point-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.point-item .point-icon {
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.point-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.trainingplacements .enquiryform {
+  background-color: var(--client-button-hover);
+}
+
+.trainingplacements .enquiryform .submitBtn {
+  background-color: var(--client-teritary-color);
+  color: var(--client-button-hover);
+}
+
+.trainingplacements .enquiryform label {
+  color: var(--client-teritary-color);
+}
+
+.homeInput {
+  border: none;
+  border-bottom: 1px solid var(--client-teritary-color);
+  background-color: var(--client-primary--color);
+  border-radius: 0px;
+  color: var(--client-teritary-color);
+}
+
+.homeInput:focus {
+  color: var(--client-teritary-color);
+  background-color: var(--client-button-hover);
+}
+
+/* / landing page  / */
+.enrollbtn {
+  background-color: var(--client-primary-color);
+  color: var(--client-teritary-color);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.sub-content {
+  color: var(--client-primary-color);
+  text-align: start;
+}
+
+.react-multiple-carousel__arrow--left,
+.react-multiple-carousel__arrow--right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.react-multiple-carousel__arrow--left {
+  left: 1px;
+}
+
+.react-multiple-carousel__arrow--right {
+  right: 1px;
+}
+
+.landing-cards {
+  background: var(--client-button-hover);
+}
+
+.input-title {
+  color: var(--client-primary-color);
+}
+.react-multi-carousel-item--active {
+  transform: scale(1.1);
+  z-index: 1;
+}
+
+.carousel-container {
+  height: auto !important;
+}
+
+.carousel-item {
+  height: auto !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* landing page  */
+
+/* / / About / / */
+/* .about-banner {
+  position: relative;
+  background-image: url(../assets/client/about_bg-image.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow-x: hidden;
+  overflow-y: hidden;
+} */
+
+.about-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--client-primary-color);
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.about-banner .content-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.about-head {
+  text-align: start;
+  color: var(--client-teritary-color);
+  margin-top: 20%;
+}
+.about-head h1 {
+  border-left: 5px solid var(--client-line-color);
+  border-radius: 5px;
+}
+
+.enroll-btn {
+  background-color: var(--client-teritary-color);
+  color: var(--client-primary-color);
+}
+
+.contact-btn {
+  border: 1px solid var(--client-teritary-color);
+  color: var(--client-teritary-color);
+}
+
+.enroll-btn:hover {
+  background-color: var(--client-teritary-color) !important;
+  color: var(--client-primary-color);
+}
+
+.contact-btn:hover {
+  border: 1px solid var(--client-teritary-color) !important;
+  color: var(--client-teritary-color);
+}
+
+.learn-btn {
+  background-color: var(--client-background-color);
+  color: var(--client-teritary-color);
+  border-radius: 3px;
+  padding: 10px;
+  border: none;
+}
+
+.learn-btn:hover {
+  background-color: var(--client-background-color);
+  color: var(--client-teritary-color);
+}
+
+.tab .nav-link {
+  color: var(--client-text-color);
+  background-color: var(--client-teritary-color);
+  border-radius: 5px;
+}
+
+.tab .nav-link:hover {
+  color: var(--client-line-color);
+}
+
+.tab .nav-link.active {
+  color: var(--client-teritary-color);
+  background-color: var(--client-line-color);
+}
+.tab .nav-link.inActive {
+  color: var(--client-teritary-color);
+  background-color: var(--client-company-button-colr);
+}
+
+.nav-tabs {
+  border-width: 0px !important;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* .about-banner1 {
+  position: relative;
+  background-image: url(../assets/client/about_bg-image-1.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow-x: hidden;
+  overflow-y: hidden;
+} */
+
+.about-banner1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--client-background-color);
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.about-banner1 .content-wrapper1 {
+  position: relative;
+  z-index: 2;
+}
+
+.about-head1 {
+  text-align: start;
+  color: var(--client-teritary-color);
+  margin-top: 20%;
+}
+
+.about-card {
+  background-color: transparent;
+  border: 2px solid var(--client-teritary-color);
+}
+
+.about-textWhite {
+  font-weight: bold;
+  font-size: larger;
+  color: var(--client-teritary-color);
+  justify-content: end;
+  align-items: end;
+}
+.imgDesign {
+  border-left: 5px solid var(--client-line-color);
+  border-radius: 5px;
+}
+.accordion-item {
+  border-left: 5px solid var(--client-line-color);
+  border-radius: 0px 5px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.123);
+}
+.accordion-button:not(.collapsed) {
+  border-left: 5px solid var(--client-line-color);
+  background-color: var(--client-teritary-color);
+  color: var(--client-text-color);
+}
+.accordion-body {
+  border-left: 5px solid var(--client-line-color);
+}
+.accordion-button:focus {
+  box-shadow: none !important;
+}
+/* / / About End  / / */
+
+/* / Login   / */
+.login-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px;
+}
+
+/* / Course testimonial  / */
+.course-cards {
+  border: 2px solid var(--client-button-hover);
+  border-radius: 20px;
+}
+.video-card {
+  border: 2px solid var(--client-button-hover);
+}
+.course-cards .head-content {
+  background: var(--client-button-hover);
+  border-radius: 1rem 1rem 0 0;
+  margin: 0;
+  padding: 5px 0;
+}
+/* / Course testimonial  / */
+
+.custom-tabs {
+  width: 100%;
+}
+
+.tabs-header {
+  display: flex;
+  justify-content: center;
+}
+
+.tabs-header button {
+  margin: 0px 2px !important;
+  border: none;
+  border-radius: 5px !important;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.tabs-header button.active,
+.tabs-header button:hover:not([disabled]) {
+  background-color: var(--client-primary-color);
+  color: white;
+}
+
+.tabs-header button[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.tabs-content {
+  /* padding: 20px; */
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+.review-cards {
+  border: 2px solid var(--client-button-hover);
+  border-radius: 20px;
+}
+
+.review-cards .header {
+  border-radius: 18px 18px 0 0;
+}
+.video-card {
+  border: 2px solid var(--client-button-hover);
+  border-radius: 10px;
+}
+.rating-review {
+  border: 2px solid white;
+  border-radius: 5px;
+  font-size: small;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* / Loader / */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* / Loader / */
+/* HTML: <div class="loader"></div> */
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 95vh;
+}
+.loader {
+  width: 20px;
+  aspect-ratio: 1;
+  background: #25b09b;
+  box-shadow: 0 0 60px 15px #25b09b;
+  transform: translate(-80px);
+  clip-path: inset(0);
+  animation:
+    l4-1 0.5s ease-in-out infinite alternate,
+    l4-2 1s   ease-in-out infinite;
+}
+@keyframes l4-1 {
+  100% {transform: translateX(80px)}
+}
+@keyframes l4-2 {
+   33% {clip-path: inset(0 0 0 -100px)}
+   50% {clip-path: inset(0 0 0 0)     }
+   83% {clip-path: inset(0 -100px 0 0)}
+}

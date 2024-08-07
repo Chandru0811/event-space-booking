@@ -1,9 +1,29 @@
 import React from 'react'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AdminHeader from '../components/AdminHeader';
+import AdminFooter from '../components/AdminFooter';
+import EventBooking from '../pages/EventBooking';
 
-function User() {
+const User = ({ handleLogin }) => {
   return (
-    <div>User</div>
-  )
+    <>
+      <BrowserRouter>
+        <div className="container-fluid p-0">
+          <AdminHeader handleLogin={handleLogin} />
+          <div
+            style={{
+              minHeight: "90vh",
+            }}
+          >
+            <Routes>
+              <Route path="/eventbooking" element={<EventBooking />} />
+            </Routes>
+          </div>
+          <AdminFooter />
+        </div>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default User

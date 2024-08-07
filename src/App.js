@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import User from "./layouts/User";
 import Admin from "./layouts/Admin";
+import "../src/styles/client.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
