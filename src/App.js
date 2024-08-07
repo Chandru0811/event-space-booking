@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import User from "./layouts/User";
+import Admin from "./layouts/Admin";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogin = () => {
+    sessionStorage.setItem("isAuthenticated", true);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = async () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem("isAuthenticated");
+  };
+
+  useEffect(() => {
+    const isAuthenticatedFromStorage =
+      sessionStorage.getItem("isAuthenticated");
+    if (isAuthenticatedFromStorage === "true") {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {isAuthenticated ? (
+        <Admin handleLogout={handleLogout} />
+      ) : (
+        <User handleLogin={handleLogin} />
+      )}
     </div>
   );
 }
