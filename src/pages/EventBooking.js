@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logo from "../assets/Logo.png";
+import logo from "../assets/Logo (1).png";
 import { FaRegClock, FaGlobeAsia } from "react-icons/fa";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -11,10 +11,10 @@ import { BiSolidQuoteRight } from "react-icons/bi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import success from "../assets/success.mp4";
+import { MdCheckBoxOutlineBlank } from "react-icons/md";
 
 function EventBooking() {
   const [date, setDate] = useState(null);
-  const [timeSlots, setTimeSlots] = useState([]);
   const [singaporeTime, setSingaporeTime] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -22,33 +22,12 @@ function EventBooking() {
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
-    generateTimeSlots(newDate);
+    // generateTimeSlots(newDate);
   };
-
-  const generateTimeSlots = (selectedDate) => {
-    const startHour = 10;
-    const endHour = 19;
-    const intervalMinutes = 30; // 30 minutes interval
-    const slots = [];
-
-    for (let hour = startHour; hour < endHour; hour++) {
-      for (let minutes = 0; minutes < 60; minutes += intervalMinutes) {
-        const time = new Date(selectedDate);
-        time.setHours(hour, minutes, 0);
-        slots.push(time);
-      }
+  const handleDateClick = (date) => {
+    if (!isBooked(date) && !isProcessing(date)) {
+      setDate(date);
     }
-
-    // For the final slot at 7:00 PM
-    const finalTime = new Date(selectedDate);
-    finalTime.setHours(endHour, 0, 0);
-    slots.push(finalTime);
-
-    setTimeSlots(slots);
-  };
-
-  const handleDateSlotClick = (time) => {
-    setSelectedDate(time);
   };
 
   const getSingaporeTime = () => {
@@ -151,16 +130,32 @@ function EventBooking() {
   const calendarColumnClass = date && !showForm ? 'col-md-4 col-12' : 'col-md-6 col-12';
   const rightColumnClass = date && !showForm ? 'col-md-3 col-12' : 'col-md-6 col-12';
 
+  const bookedDates = [new Date(2024, 7, 10), new Date(2024, 7, 15)];
+  const availableDates = [new Date];
+  const processingDates = [new Date(2024, 7, 20)];
+
+  const isBooked = (date) => bookedDates.some(d => date.toDateString() === d.toDateString());
+  const isAvailable = (date) => availableDates.some(d => date.toDateString() === d.toDateString());
+  const isProcessing = (date) => processingDates.some(d => date.toDateString() === d.toDateString());
+
+  const tileDisabled = ({ date }) => isBooked(date) || isProcessing(date);
+
+  const tileClassName = ({ date }) => {
+    if (isBooked(date)) return 'booked-slot';
+    if (isProcessing(date)) return 'processing-slot';
+    return '';
+  };
+
   return (
-    <section className='mt-5 contactUs'>
-      <div className='container-fluid py-5'>
+    <section className='pt-4 contactUs contactDetails1'>
+      <div className='container-fluid'>
         <div className='row'>
           <div className='offset-lg-1 col-lg-10 col-12'>
             <div className='card contactCard'>
               <div className='row'>
                 {!isBookingConfirmed ? (
                   <>
-                    <div className={leftColumnClass + ' py-5'}>
+                    <div className={leftColumnClass + ' py-4'}>
                       <div className='d-flex align-items-center justify-content-center mb-5'>
                         <img
                           src={logo}
@@ -168,23 +163,22 @@ function EventBooking() {
                           className="d-inline-block align-top"
                           alt="ECS Training"
                         />
-                        <div className='logoText mt-2'>
-                          <h2 className='mb-0 fw-bold'>ECS</h2>
-                          <h6 className='fw-bold'>Training</h6>
-                        </div>
                       </div>
                       <hr className='mb-4' />
                       <div className='text-start' style={{ marginLeft: "50px" }}>
-                        <h6 className='logoText fw-bold'>Design Team</h6>
-                        <h2>30 Minute Meeting</h2>
-                        <div className='logoText d-flex align-items-center'>
+                        <h4 className='logoText fw-bold'>Book Slot</h4>
+                        <div className='logoText d-flex align-items-center py-2'>
                           <FaRegClock />
-                          <span className='fw-medium mx-1'>30 min</span>
+                          <span className='fw-medium mx-1'>Full Day</span>
+                        </div>
+                        <div className='logoText d-flex align-items-center py-2'>
+                          <FaRegClock />
+                          <span className='fw-medium mx-1'>Off Day</span>
                         </div>
                       </div>
                     </div>
                     {!showForm && (
-                      <div className={calendarColumnClass + ' py-4 text-start contactCard-right'}>
+                      <div className={calendarColumnClass + ' py-4 text-center contactCard-right'}>
                         <h5 className='fw-bold mb-4 mx-2'>Select a Date & Time</h5>
                         <div className='row'>
                           <div className='col-md-12'>
@@ -196,10 +190,14 @@ function EventBooking() {
                                 maxDate={maxDate}
                                 minDetail="month"
                                 maxDetail="month"
-                                // tileDisabled={tileDisabled}
+                                tileClassName={tileClassName}
+                                tileDisabled={tileDisabled}
                                 className='mb-4'
                               />
                             </div>
+                            <span className='d-flex justify-content-start mx-5'>
+                              <MdCheckBoxOutlineBlank className='text-secondary'/> Sold Out
+                            </span>
                             <h5 className='fw-bold mb-3 mx-2'>Time Zone</h5>
                             <div className='time-zone'>
                               <FaGlobeAsia color='#515B6F' /><span className='mx-1'>Singapore Time ({singaporeTime})</span>
@@ -209,9 +207,9 @@ function EventBooking() {
                       </div>
                     )}
                     {date && !showForm && (
-                      <div className={rightColumnClass + ' py-5 text-center'}>
+                      <div className={rightColumnClass + ' py-4 text-center'}>
                         <h6 className='mb-4 mt-3 mx-5'>{formatSelectedDate()}</h6>
-                        <button className="next-btn" onClick={handleNextClick}>To Book</button>
+                        <button className="next-btn" onClick={handleNextClick}>Countinue To Book</button>
                       </div>
                     )}
                     {showForm && (
@@ -286,7 +284,7 @@ function EventBooking() {
                     )}
                   </>
                 ) : (
-                  <div className='col-12 py-5 text-center'>
+                  <div className='col-12 py-4 text-center'>
                     <div className='mb-4'>
                       <video
                         src={success}
@@ -295,19 +293,7 @@ function EventBooking() {
                         muted
                         style={{ maxHeight: '150px' }}
                       />
-                      <h5 className='fw-bold text-success'>Thank you for scheduling your event!</h5>
-                    </div>
-                    <div className='d-flex align-items-center justify-content-center mb-5'>
-                      <img
-                        src={logo}
-                        height="70"
-                        className="d-inline-block align-top"
-                        alt="ECS Training"
-                      />
-                      <div className='logoText mt-2'>
-                        <h2 className='mb-0 fw-bold'>ECS</h2>
-                        <h6 className='fw-bold'>Training</h6>
-                      </div>
+                      <h5 className='fw-bold text-success'>Thank you for Book your event!</h5>
                     </div>
                     <hr className='mb-5' />
                     <h6 className='mb-3'>Your appointment scheduled for {formatSelectedDate()} {selectedDate && ` at ${selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`} has been confirmed.</h6>
@@ -375,9 +361,9 @@ function EventBooking() {
           </div>
         </div>
       </div>
-      <div className='container-fluid contactDetails1'>
-        <div className='container py-5'>
-          <div className='row py-5'>
+      <div className='container-fluid pb-4'>
+        <div className='container'>
+          <div className='row'>
             <div className='col-lg-6 col-12'>
               <form onSubmit={formik2.handleSubmit}>
                 <div className='card text-start p-5' style={{ border: "none", borderRadius: "30px" }}>

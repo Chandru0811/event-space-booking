@@ -15,9 +15,8 @@ const User = ({ handleLogin }) => {
               minHeight: "90vh",
             }}
           >
-            <Routes>
-              <Route path="/eventbooking" element={<EventBooking />} />
-            </Routes>
+            <hr></hr>
+            <EventBooking></EventBooking>
           </div>
           <AdminFooter />
         </div>

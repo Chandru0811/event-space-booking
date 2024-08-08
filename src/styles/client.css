@@ -179,6 +179,8 @@ hr {
 }
 
 .react-calendar__tile:disabled {
+  /* pointer-events: none; */
+  cursor: not-allowed; 
   background: none;
   color: var(--client-shadow-color);
 }
@@ -225,11 +227,6 @@ hr {
   color: var(--client-primary-color);
 }
 
-.react-calendar__month-view__days__day--weekend {
-  color: var(--client-paratext-color) !important;
-  background: none !important;
-  font-weight: 300 !important;
-}
 
 .react-calendar__tile--active {
   background-color: #118aef !important;
@@ -845,4 +842,18 @@ hr {
    33% {clip-path: inset(0 0 0 -100px)}
    50% {clip-path: inset(0 0 0 0)     }
    83% {clip-path: inset(0 -100px 0 0)}
+}
+.booked-slot {
+  background-color: #28a745;
+  color: white;
+}
+
+.available-slot {
+  background-color: #007bff;
+  color: white;
+}
+
+.processing-slot {
+  background-color: #fd7e14;
+  color: white;
 }
