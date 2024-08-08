@@ -14,6 +14,8 @@ import success from "../assets/success.mp4";
 import circle from "../assets/circle.png";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import eventBookingUserTemplate from './EmailTemp/EventBookingUserTemp';
+import newEventAlertAdminTemplate from './EmailTemp/EventBookingAdminTemp';
 
 
 function EventBooking() {
@@ -79,6 +81,7 @@ function EventBooking() {
     onSubmit: async (data) => {
       // console.log(data);
       data.company_id = 2;
+      const companyId = data.company_id;
       data.company = "ECSCloudInfotech";
       data.lead_status = "PENDING";
       setLoadIndicator(true)
@@ -92,6 +95,8 @@ function EventBooking() {
           toast.success("Thank You for Contacting Us! We'll be in touch soon!");
           // formik1.resetForm();
           setLoadIndicator(false)
+          eventBookingUserTemplate(data,companyId);
+          newEventAlertAdminTemplate(data,companyId);
         } else {
           toast.error(response.data.message);
           setLoadIndicator(false)

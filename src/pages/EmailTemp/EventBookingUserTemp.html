@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Event Booking Confirmation</title>
+  <style>
+    body {
+      background-color: #ddd;
+    }
+    .invoice-box {
+      font-size: 12px;
+      max-width: 600px;
+      background-color: #fff;
+      margin: auto;
+      padding: 30px;
+      border-bottom: 3px solid #0059ff;
+      line-height: 24px;
+      font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+      color: #555;
+      min-height: 85vh;
+    }
+    .invoice-box table {
+      width: 100%;
+      line-height: inherit;
+      text-align: left;
+    }
+    .invoice-box table td {
+      padding: 5px;
+      vertical-align: top;
+    }
+    .invoice-box table tr.heading td {
+      background: #eee;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+    }
+    .invoice-box table tr.item td {
+      border-bottom: 1px solid #eee;
+    }
+    .invoice {
+      padding: 1rem;
+    }
+    @media print {
+      .invoice-box {
+        border: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice-box">
+    <table>
+      <tr class="top">
+        <td colspan="2">
+          <table>
+            <tr>
+              <td class="title">
+                <img
+                  src=""
+                  style="width: 75%; max-width: 180px"
+                  alt="Logo"
+                />
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <div class="invoice">
+      <h1 style="color: black;">Hi, Chandru</h1>
+      <p style="margin: 2rem 0;">Thank you for booking your event with <strong>ECS Cloud</strong>!</p>
+      <p>We're excited to confirm your booking for the following event:</p>
+      <ul>
+        <li><strong>Event Name:</strong>Birthday Party</li>
+        <li><strong>Date:</strong>01-01-2024</li>
+        <li><strong>Time:</strong> 09:00 AM(Asia/Singapore)</li>
+        <li><strong>Location:</strong>Singapore</li>
+      </ul>
+      <p>If you need to reschedule or cancel your booking, you can do so by clicking the link below:</p>
+      <p>We're looking forward to having you at the event! If you have any questions, feel free to reach out to us at ${companyData.companyEmail || ""}.</p>
+      <p style="margin: 0 0 2rem 0;">Powered by ECS</p>
+      <hr />
+    </div>
+  </div>
+</body>
+</html>`;
