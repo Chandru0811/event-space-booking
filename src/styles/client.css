@@ -181,7 +181,7 @@ hr {
 .react-calendar__tile:disabled {
   /* pointer-events: none; */
   cursor: not-allowed; 
-  background: none;
+  /* background: none; */
   color: var(--client-shadow-color);
 }
 

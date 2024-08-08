@@ -1,10 +1,6 @@
 import React from "react";
 import logo from "../assets/Logo (1).png";
-import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { NavLink } from "react-router-dom";
-import EventBooking from "../pages/EventBooking";
-
 function AdminHeader({ handleLogout }) {
   const handelLogin = () => {
     alert("Hii");

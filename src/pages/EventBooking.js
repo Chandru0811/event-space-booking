@@ -11,7 +11,10 @@ import { BiSolidQuoteRight } from "react-icons/bi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import success from "../assets/success.mp4";
-import { MdCheckBoxOutlineBlank } from "react-icons/md";
+import circle from "../assets/circle.png";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 
 function EventBooking() {
   const [date, setDate] = useState(null);
@@ -19,6 +22,7 @@ function EventBooking() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [isBookingConfirmed, setIsBookingConfirmed] = useState(false);
+  const [loadIndicator, setLoadIndicator] = useState(false);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
@@ -49,28 +53,53 @@ function EventBooking() {
   }, []);
 
   const validationSchema1 = Yup.object({
-    fullName: Yup.string().required("*Full Name is required"),
+    first_name: Yup.string().required("*First Name is required"),
+    last_name: Yup.string().required("*Last Name is required"),
     email: Yup.string()
       .email("*Invalid Email Address")
       .required("*Email is required"),
-    phoneNumber: Yup.string()
+    phone: Yup.string()
       .matches(/^\d+$/, "*Must be a Number")
       .min(8, "*Invalid Phone Number")
       .max(10, "*Invalid Phone Number")
-      .required("*Phone Number is required")
+      .required("*Phone Number is required"),
+    // description_info: Yup.string().required("*Message is required"),
   });
 
   const formik1 = useFormik({
     initialValues: {
-      fullName: "",
+      company_id: "",
+      first_name: "",
+      last_name: "",
+      phone: "",
       email: "",
-      phoneNumber: "",
-      message: ""
+      description_info: ""
     },
     validationSchema: validationSchema1,
-    onSubmit: (values) => {
-      console.log("Contact Datas:", values);
-      setIsBookingConfirmed(true);
+    onSubmit: async (data) => {
+      // console.log(data);
+      data.company_id = 2;
+      data.company = "ECSCloudInfotech";
+      data.lead_status = "PENDING";
+      setLoadIndicator(true)
+      try {
+        const response = await axios.post(`http://13.213.208.92:8080/ecscrm/api/newClient`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.status === 201) {
+          toast.success("Thank You for Contacting Us! We'll be in touch soon!");
+          // formik1.resetForm();
+          setLoadIndicator(false)
+        } else {
+          toast.error(response.data.message);
+          setLoadIndicator(false)
+        }
+      } catch (error) {
+        toast.error("Failed: " + error.message);
+        setLoadIndicator(false)
+      }
     },
   });
 
@@ -116,6 +145,7 @@ function EventBooking() {
 
   const handleBackClick = () => {
     setShowForm(false);
+    formik1.resetForm();
   };
 
   const handleNewBookingClick = () => {
@@ -161,7 +191,7 @@ function EventBooking() {
                           src={logo}
                           height="70"
                           className="d-inline-block align-top"
-                          alt="ECS Training"
+                          alt="event book"
                         />
                       </div>
                       <hr className='mb-4' />
@@ -192,12 +222,20 @@ function EventBooking() {
                                 maxDetail="month"
                                 tileClassName={tileClassName}
                                 tileDisabled={tileDisabled}
-                                className='mb-4'
+                                className='mb-3'
                               />
                             </div>
-                            <span className='d-flex justify-content-start mx-5'>
-                              <MdCheckBoxOutlineBlank className='text-secondary'/> Sold Out
-                            </span>
+                            <div className='d-flex align-items-start justify-content-start mx-4'>
+                              <img
+                                src={circle}
+                                height="20"
+                                className="d-inline-block me-2"
+                                alt="circle"
+                              />
+                              <span className='text-danger'>
+                                Soldout
+                              </span>
+                            </div>
                             <h5 className='fw-bold mb-3 mx-2'>Time Zone</h5>
                             <div className='time-zone'>
                               <FaGlobeAsia color='#515B6F' /><span className='mx-1'>Singapore Time ({singaporeTime})</span>
@@ -222,17 +260,32 @@ function EventBooking() {
                             <h2 className='mb-3'>Add your Details</h2>
                             <form onSubmit={formik1.handleSubmit}>
                               <div className='mb-3'>
-                                <label className='form-label'>Full Name<span className='text-danger'>*</span></label>
+                                <label className='form-label'>First Name<span className='text-danger'>*</span></label>
                                 <input type='text'
-                                  className={`form-control ${formik1.touched.fullName && formik1.errors.fullName
+                                  className={`form-control ${formik1.touched.first_name && formik1.errors.first_name
                                     ? "is-invalid"
                                     : ""
                                     }`}
-                                  {...formik1.getFieldProps("fullName")}
+                                  {...formik1.getFieldProps("first_name")}
                                 />
-                                {formik1.touched.fullName && formik1.errors.fullName && (
+                                {formik1.touched.first_name && formik1.errors.first_name && (
                                   <div className="invalid-feedback">
-                                    {formik1.errors.fullName}
+                                    {formik1.errors.first_name}
+                                  </div>
+                                )}
+                              </div>
+                              <div className='mb-3'>
+                                <label className='form-label'>Last Name<span className='text-danger'>*</span></label>
+                                <input type='text'
+                                  className={`form-control ${formik1.touched.last_name && formik1.errors.last_name
+                                    ? "is-invalid"
+                                    : ""
+                                    }`}
+                                  {...formik1.getFieldProps("last_name")}
+                                />
+                                {formik1.touched.last_name && formik1.errors.last_name && (
+                                  <div className="invalid-feedback">
+                                    {formik1.errors.last_name}
                                   </div>
                                 )}
                               </div>
@@ -254,15 +307,15 @@ function EventBooking() {
                               <div className='mb-3'>
                                 <label className='form-label'>Phone Number<span className='text-danger'>*</span></label>
                                 <input type='text'
-                                  className={`form-control ${formik1.touched.phoneNumber && formik1.errors.phoneNumber
+                                  className={`form-control ${formik1.touched.phone && formik1.errors.phone
                                     ? "is-invalid"
                                     : ""
                                     }`}
-                                  {...formik1.getFieldProps("phoneNumber")}
+                                  {...formik1.getFieldProps("phone")}
                                 />
-                                {formik1.touched.phoneNumber && formik1.errors.phoneNumber && (
+                                {formik1.touched.phone && formik1.errors.phone && (
                                   <div className="invalid-feedback">
-                                    {formik1.errors.phoneNumber}
+                                    {formik1.errors.phone}
                                   </div>
                                 )}
                               </div>
@@ -271,11 +324,23 @@ function EventBooking() {
                                 <textarea
                                   rows={5}
                                   className='form-control'
-                                  {...formik1.getFieldProps("message")}
+                                  {...formik1.getFieldProps("description_info")}
                                 />
                               </div>
                               <div className='mb-5'>
-                                <button type='submit' className='btn btn-primary'>Schedule the Event</button>
+                                <button
+                                  type="submit"
+                                  className="btn btn-primary"
+                                  disabled={loadIndicator}
+                                >
+                                  {loadIndicator && (
+                                    <span
+                                      className="spinner-border spinner-border-sm me-2"
+                                      aria-hidden="true"
+                                    ></span>
+                                  )}
+                                  Schedule the Event
+                                </button>
                               </div>
                             </form>
                           </div>
@@ -293,7 +358,7 @@ function EventBooking() {
                         muted
                         style={{ maxHeight: '150px' }}
                       />
-                      <h5 className='fw-bold text-success'>Thank you for Book your event!</h5>
+                      <h5 className='fw-bold text-success'>Thank you has been book your event!</h5>
                     </div>
                     <hr className='mb-5' />
                     <h6 className='mb-3'>Your appointment scheduled for {formatSelectedDate()} {selectedDate && ` at ${selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`} has been confirmed.</h6>
