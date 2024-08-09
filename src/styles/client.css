@@ -170,6 +170,20 @@ hr {
   }
 }
 
+.booked-slot {
+  background-color: yellow;
+  border-radius: 50%;
+  color: #000;
+}
+
+.confirmed-slot {
+  background-color: green;
+  border-radius: 50%;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+
 .react-calendar__navigation button:disabled {
   background: none !important;
 }

@@ -20,21 +20,38 @@ import newEventAlertAdminTemplate from './EmailTemp/EventBookingAdminTemp';
 
 function EventBooking() {
   const [date, setDate] = useState(null);
+  const [bookedDates, setBookedDates] = useState([]);
+  
   const [singaporeTime, setSingaporeTime] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [isBookingConfirmed, setIsBookingConfirmed] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
 
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
-    // generateTimeSlots(newDate);
-  };
-  const handleDateClick = (date) => {
-    if (!isBooked(date) && !isProcessing(date)) {
-      setDate(date);
-    }
-  };
+    // Function to save booked dates in session storage
+    const saveBookedDates = (dates) => {
+      sessionStorage.setItem('bookedDates', JSON.stringify(dates));
+    };
+  
+    useEffect(() => {
+      // Retrieve booked dates from session storage on component mount
+      const storedDates = JSON.parse(sessionStorage.getItem('bookedDates')) || [];
+      setBookedDates(storedDates);
+    }, []);
+  
+
+    const handleDateChange = (newDate) => {
+      const formattedDate = formatDate(newDate);
+      setDate(formattedDate);
+      
+      // Add the newly selected date to the bookedDates array
+      const updatedBookedDates = [...bookedDates, formattedDate];
+      setBookedDates(updatedBookedDates);
+  
+      // Save the updated booked dates to session storage
+      sessionStorage.setItem('bookedDates', JSON.stringify(updatedBookedDates));
+    };
+  
 
   const getSingaporeTime = () => {
     const singaporeTimeZone = 'Asia/Singapore';
@@ -99,6 +116,12 @@ function EventBooking() {
           eventBookingUserTemplate(data,companyId);
           newEventAlertAdminTemplate(data,companyId);
           setIsBookingConfirmed(true);
+
+          // Add the newly booked date to the session storage
+          const updatedBookedDates = [...bookedDates, new Date(data.Booking_date)];
+          setBookedDates(updatedBookedDates);
+          saveBookedDates(updatedBookedDates);
+
         } else {
           toast.error(response.data.message);
           setLoadIndicator(false)
@@ -141,13 +164,20 @@ function EventBooking() {
   const maxDate = new Date(today.getFullYear(), today.getMonth() + 3, 0);
 
   const formatSelectedDate = () => {
-    if (!date) return '';
-    const year = date.getFullYear().toString(); 
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-    const day = date.getDate().toString().padStart(2, '0');
+    // Check if the date is a string or a Date object
+    const selectedDate = date instanceof Date ? date : new Date(date);
+  
+    if (!selectedDate || isNaN(selectedDate)) return '';
+  
+    const year = selectedDate.getFullYear().toString();
+    const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = selectedDate.getDate().toString().padStart(2, '0');
+  
     return `${year}-${month}-${day}`;
   };
-  console.log("formatSelectedDate",formatSelectedDate())
+  
+  console.log("formatSelectedDate", formatSelectedDate());
+  
 
   const handleNextClick = () => {
     setShowForm(true);
@@ -170,24 +200,22 @@ function EventBooking() {
   const calendarColumnClass = date && !showForm ? 'col-md-4 col-12' : 'col-md-6 col-12';
   const rightColumnClass = date && !showForm ? 'col-md-3 col-12' : 'col-md-6 col-12';
 
-  const bookedDates = [new Date(2024, 7, 10), new Date(2024, 7, 15)];
-  const availableDates = [new Date];
-  const processingDates = [new Date(2024, 7, 20)];
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
-  const formatDate = (date) => date.toISOString().split('T')[0];
+  const isBooked = (date) => {
+    const formattedDate = formatDate(date);
+    return bookedDates.includes(formattedDate);
+  };
 
-  const isBooked = (date) => bookedDates.some(d => formatDate(date) === formatDate(d));
-  const isAvailable = (date) => availableDates.some(d => formatDate(date) === formatDate(d));
-  const isProcessing = (date) => processingDates.some(d => formatDate(date) === formatDate(d));
-
-  console.log("bookedDates", bookedDates.map(formatDate));
-  console.log("processingDates", processingDates.map(formatDate));
-
-  const tileDisabled = ({ date }) => isBooked(date) || isProcessing(date);
+  const tileDisabled = ({ date }) => isBooked(date);
 
   const tileClassName = ({ date }) => {
     if (isBooked(date)) return 'booked-slot';
-    if (isProcessing(date)) return 'processing-slot';
     return '';
   };
 
