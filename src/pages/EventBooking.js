@@ -92,11 +92,12 @@ function EventBooking() {
           },
         });
         if (response.status === 201) {
-          toast.success("Thank You for Contacting Us! We'll be in touch soon!");
+          // toast.success("Thank You for Contacting Us! We'll be in touch soon!");
           // formik1.resetForm();
           setLoadIndicator(false)
           eventBookingUserTemplate(data,companyId);
           newEventAlertAdminTemplate(data,companyId);
+          setIsBookingConfirmed(true);
         } else {
           toast.error(response.data.message);
           setLoadIndicator(false)
@@ -165,13 +166,18 @@ function EventBooking() {
   const calendarColumnClass = date && !showForm ? 'col-md-4 col-12' : 'col-md-6 col-12';
   const rightColumnClass = date && !showForm ? 'col-md-3 col-12' : 'col-md-6 col-12';
 
-  const bookedDates = [new Date(2024, 7, 10), new Date(2024, 7, 15)];
+  const bookedDates = [new Date(2024, 8, 10), new Date(2024, 8, 15)];
   const availableDates = [new Date];
-  const processingDates = [new Date(2024, 7, 20)];
+  const processingDates = [new Date(2024, 8, 20)];
 
-  const isBooked = (date) => bookedDates.some(d => date.toDateString() === d.toDateString());
-  const isAvailable = (date) => availableDates.some(d => date.toDateString() === d.toDateString());
-  const isProcessing = (date) => processingDates.some(d => date.toDateString() === d.toDateString());
+  const formatDate = (date) => date.toISOString().split('T')[0];
+
+  const isBooked = (date) => bookedDates.some(d => formatDate(date) === formatDate(d));
+  const isAvailable = (date) => availableDates.some(d => formatDate(date) === formatDate(d));
+  const isProcessing = (date) => processingDates.some(d => formatDate(date) === formatDate(d));
+
+  console.log("bookedDates", bookedDates.map(formatDate));
+  console.log("processingDates", processingDates.map(formatDate));
 
   const tileDisabled = ({ date }) => isBooked(date) || isProcessing(date);
 
@@ -202,6 +208,7 @@ function EventBooking() {
                       <hr className='mb-4' />
                       <div className='text-start' style={{ marginLeft: "50px" }}>
                         <h4 className='logoText fw-bold'>Book Slot</h4>
+                        <h6 className='py-2'>{formatSelectedDate()}</h6>
                         <div className='logoText d-flex align-items-center py-2'>
                           <FaRegClock />
                           <span className='fw-medium mx-1'>Full Day</span>
@@ -363,10 +370,11 @@ function EventBooking() {
                         muted
                         style={{ maxHeight: '150px' }}
                       />
-                      <h5 className='fw-bold text-success'>Thank you has been book your event!</h5>
+                      {/* <h5 className='fw-bold text-success'>Thank you! Your event has been booked.</h5> */}
+                      <h5 className='fw-bold text-success'>Thank You for Contacting Us! We'll be in touch soon!</h5>
                     </div>
                     <hr className='mb-5' />
-                    <h6 className='mb-3'>Your appointment scheduled for {formatSelectedDate()} {selectedDate && ` at ${selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`} has been confirmed.</h6>
+                    <h6 className='mb-3'>Your appointment is scheduled for {formatSelectedDate()} {selectedDate && ` at ${selectedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}`}. Please wait for confirmation.</h6>
                     <p className='paraText mb-3'>For further details check your mail.</p>
                     <button className='btn btn-primary' onClick={handleNewBookingClick}>New Booking</button>
                   </div>
