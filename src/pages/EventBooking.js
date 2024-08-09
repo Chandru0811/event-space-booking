@@ -80,6 +80,7 @@ function EventBooking() {
     validationSchema: validationSchema1,
     onSubmit: async (data) => {
       // console.log(data);
+      data.Booking_date = formatSelectedDate();
       data.company_id = 2;
       const companyId = data.company_id;
       data.company = "ECSCloudInfotech";
@@ -141,9 +142,12 @@ function EventBooking() {
 
   const formatSelectedDate = () => {
     if (!date) return '';
-    const options = { weekday: 'long', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
+    const year = date.getFullYear().toString(); 
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
+  console.log("formatSelectedDate",formatSelectedDate())
 
   const handleNextClick = () => {
     setShowForm(true);
@@ -166,9 +170,9 @@ function EventBooking() {
   const calendarColumnClass = date && !showForm ? 'col-md-4 col-12' : 'col-md-6 col-12';
   const rightColumnClass = date && !showForm ? 'col-md-3 col-12' : 'col-md-6 col-12';
 
-  const bookedDates = [new Date(2024, 8, 10), new Date(2024, 8, 15)];
+  const bookedDates = [new Date(2024, 7, 10), new Date(2024, 7, 15)];
   const availableDates = [new Date];
-  const processingDates = [new Date(2024, 8, 20)];
+  const processingDates = [new Date(2024, 7, 20)];
 
   const formatDate = (date) => date.toISOString().split('T')[0];
 
