@@ -21,37 +21,37 @@ import newEventAlertAdminTemplate from './EmailTemp/EventBookingAdminTemp';
 function EventBooking() {
   const [date, setDate] = useState(null);
   const [bookedDates, setBookedDates] = useState([]);
-  
+  const token = "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJDTVBfT1dORVIiXSwic3ViIjoiTUlUX1NwYWNlIiwiaWF0IjoxNzIzMjkyMzcxLCJleHAiOjE3MjMyOTU5NzF9.PxIofwfurcW2A8RSetFWiWhoK_K-ogS67JFfvVhDcMG_bs2Gq9laGlI3GSYGAc0yBTGr04Jqhqo-IVFY6HPgig";
   const [singaporeTime, setSingaporeTime] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [isBookingConfirmed, setIsBookingConfirmed] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
 
-    // Function to save booked dates in session storage
-    const saveBookedDates = (dates) => {
-      sessionStorage.setItem('bookedDates', JSON.stringify(dates));
-    };
-  
-    useEffect(() => {
-      // Retrieve booked dates from session storage on component mount
-      const storedDates = JSON.parse(sessionStorage.getItem('bookedDates')) || [];
-      setBookedDates(storedDates);
-    }, []);
-  
+  // Function to save booked dates in session storage
+  const saveBookedDates = (dates) => {
+    sessionStorage.setItem('bookedDates', JSON.stringify(dates));
+  };
 
-    const handleDateChange = (newDate) => {
-      const formattedDate = formatDate(newDate);
-      setDate(formattedDate);
-      
-      // Add the newly selected date to the bookedDates array
-      const updatedBookedDates = [...bookedDates, formattedDate];
-      setBookedDates(updatedBookedDates);
-  
-      // Save the updated booked dates to session storage
-      sessionStorage.setItem('bookedDates', JSON.stringify(updatedBookedDates));
-    };
-  
+  useEffect(() => {
+    // Retrieve booked dates from session storage on component mount
+    const storedDates = JSON.parse(sessionStorage.getItem('bookedDates')) || [];
+    setBookedDates(storedDates);
+  }, []);
+
+
+  const handleDateChange = (newDate) => {
+    const formattedDate = formatDate(newDate);
+    setDate(formattedDate);
+
+    // Add the newly selected date to the bookedDates array
+    const updatedBookedDates = [...bookedDates, formattedDate];
+    setBookedDates(updatedBookedDates);
+
+    // Save the updated booked dates to session storage
+    sessionStorage.setItem('bookedDates', JSON.stringify(updatedBookedDates));
+  };
+
 
   const getSingaporeTime = () => {
     const singaporeTimeZone = 'Asia/Singapore';
@@ -72,9 +72,9 @@ function EventBooking() {
   }, []);
 
   const validationSchema1 = Yup.object({
-    first_name: Yup.string().required("*First Name is required"),
-    last_name: Yup.string().required("*Last Name is required"),
-    email: Yup.string()
+    firstName: Yup.string().required("*First Name is required"),
+    lastName: Yup.string().required("*Last Name is required"),
+    businessEmail: Yup.string()
       .email("*Invalid Email Address")
       .required("*Email is required"),
     phone: Yup.string()
@@ -88,10 +88,10 @@ function EventBooking() {
   const formik1 = useFormik({
     initialValues: {
       company_id: "",
-      first_name: "",
-      last_name: "",
+      firstName: "",
+      lastName: "",
       phone: "",
-      email: "",
+      businessEmail: "",
       description_info: ""
     },
     validationSchema: validationSchema1,
@@ -104,31 +104,39 @@ function EventBooking() {
       data.lead_status = "PENDING";
       setLoadIndicator(true)
       try {
-        const response = await axios.post(`http://13.213.208.92:8080/ecscrm/api/newClient`, data, {
+        const response1 = await axios.post(`http://13.213.208.92:8080/ecscrm/api/newClient`, data, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if (response.status === 201) {
-          // toast.success("Thank You for Contacting Us! We'll be in touch soon!");
-          // formik1.resetForm();
-          setLoadIndicator(false)
-          eventBookingUserTemplate(data,companyId);
-          newEventAlertAdminTemplate(data,companyId);
-          setIsBookingConfirmed(true);
+        if (response1.status === 201) {
+          const response2 = await axios.post(`http://13.213.208.92:8080/ecscrm/api/createEventManagement`, data, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response2.status === 201) {
+            ;
+            setLoadIndicator(false)
+            eventBookingUserTemplate(data, companyId);
+            newEventAlertAdminTemplate(data, companyId);
+            setIsBookingConfirmed(true);
 
-          // Add the newly booked date to the session storage
-          const updatedBookedDates = [...bookedDates, new Date(data.Booking_date)];
-          setBookedDates(updatedBookedDates);
-          saveBookedDates(updatedBookedDates);
+            const updatedBookedDates = [...bookedDates, new Date(data.Booking_date)];
+            setBookedDates(updatedBookedDates);
+            saveBookedDates(updatedBookedDates);
 
+          } else {
+            toast.error(response2.data.message);
+          }
         } else {
-          toast.error(response.data.message);
-          setLoadIndicator(false)
+          toast.error(response1.data.message);
         }
       } catch (error) {
         toast.error("Failed: " + error.message);
-        setLoadIndicator(false)
+      } finally {
+        setLoadIndicator(false);
       }
     },
   });
@@ -166,18 +174,18 @@ function EventBooking() {
   const formatSelectedDate = () => {
     // Check if the date is a string or a Date object
     const selectedDate = date instanceof Date ? date : new Date(date);
-  
+
     if (!selectedDate || isNaN(selectedDate)) return '';
-  
+
     const year = selectedDate.getFullYear().toString();
     const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
     const day = selectedDate.getDate().toString().padStart(2, '0');
-  
+
     return `${year}-${month}-${day}`;
   };
-  
+
   console.log("formatSelectedDate", formatSelectedDate());
-  
+
 
   const handleNextClick = () => {
     setShowForm(true);
@@ -306,45 +314,45 @@ function EventBooking() {
                               <div className='mb-3'>
                                 <label className='form-label'>First Name<span className='text-danger'>*</span></label>
                                 <input type='text'
-                                  className={`form-control ${formik1.touched.first_name && formik1.errors.first_name
+                                  className={`form-control ${formik1.touched.firstName && formik1.errors.firstName
                                     ? "is-invalid"
                                     : ""
                                     }`}
-                                  {...formik1.getFieldProps("first_name")}
+                                  {...formik1.getFieldProps("firstName")}
                                 />
-                                {formik1.touched.first_name && formik1.errors.first_name && (
+                                {formik1.touched.firstName && formik1.errors.firstName && (
                                   <div className="invalid-feedback">
-                                    {formik1.errors.first_name}
+                                    {formik1.errors.firstName}
                                   </div>
                                 )}
                               </div>
                               <div className='mb-3'>
                                 <label className='form-label'>Last Name<span className='text-danger'>*</span></label>
                                 <input type='text'
-                                  className={`form-control ${formik1.touched.last_name && formik1.errors.last_name
+                                  className={`form-control ${formik1.touched.lastName && formik1.errors.lastName
                                     ? "is-invalid"
                                     : ""
                                     }`}
-                                  {...formik1.getFieldProps("last_name")}
+                                  {...formik1.getFieldProps("lastName")}
                                 />
-                                {formik1.touched.last_name && formik1.errors.last_name && (
+                                {formik1.touched.lastName && formik1.errors.lastName && (
                                   <div className="invalid-feedback">
-                                    {formik1.errors.last_name}
+                                    {formik1.errors.lastName}
                                   </div>
                                 )}
                               </div>
                               <div className='mb-3'>
                                 <label className='form-label'>Email<span className='text-danger'>*</span></label>
                                 <input type='text'
-                                  className={`form-control ${formik1.touched.email && formik1.errors.email
+                                  className={`form-control ${formik1.touched.businessEmail && formik1.errors.businessEmail
                                     ? "is-invalid"
                                     : ""
                                     }`}
-                                  {...formik1.getFieldProps("email")}
+                                  {...formik1.getFieldProps("businessEmail")}
                                 />
-                                {formik1.touched.email && formik1.errors.email && (
+                                {formik1.touched.businessEmail && formik1.errors.businessEmail && (
                                   <div className="invalid-feedback">
-                                    {formik1.errors.email}
+                                    {formik1.errors.businessEmail}
                                   </div>
                                 )}
                               </div>
