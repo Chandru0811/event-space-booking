@@ -514,7 +514,7 @@ function EventBooking() {
                     </div>
                     <hr className="mb-5" />
                     <h6 className="mb-3">
-                      Your appointment is scheduled for {formatSelectedDate()}{" "}
+                      Your Event is scheduled for {formatSelectedDate()}{" "}
                       {selectedDate &&
                         ` at ${selectedDate.toLocaleTimeString([], {
                           hour: "2-digit",
