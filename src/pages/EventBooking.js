@@ -133,46 +133,46 @@ function EventBooking() {
           }
         );
         if (response1.status === 201) {
-         try{
-           const payload2 = {
-            companyId: 28,
-            companyName: "MIT Space",
-            firstName: data.firstName,
-            lastName: data.lastName,
-            businessEmail: data.businessEmail,
-            phone: data.phone,
-            eventDate: formatSelectedDate(),
-            enquiry: data.description_info,
-            eventStatus: "NEW",
-          };
-          const response2 = await axios.post(
-            `https://crmlah.com/ecscrm/api/createEventManagement`,
-            payload2,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (response2.status === 201) {
-            console.log("Data is ", data)
-            setLoadIndicator(false);
-            eventBookingUserTemplate(data, 28);
-            newEventAlertAdminTemplate(data, 28);
-            setIsBookingConfirmed(true);
+          try {
+            const payload2 = {
+              companyId: 28,
+              companyName: "MIT Space",
+              firstName: data.firstName,
+              lastName: data.lastName,
+              businessEmail: data.businessEmail,
+              phone: data.phone,
+              eventDate: formatSelectedDate(),
+              enquiry: data.description_info,
+              eventStatus: "NEW",
+            };
+            const response2 = await axios.post(
+              `https://crmlah.com/ecscrm/api/createEventManagement`,
+              payload2,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            if (response2.status === 201) {
+              console.log("Data is ", data);
+              setLoadIndicator(false);
+              eventBookingUserTemplate(data, 28);
+              newEventAlertAdminTemplate(data, 28);
+              setIsBookingConfirmed(true);
 
-            const updatedBookedDates = [
-              ...bookedDates,
-              new Date(payload2.eventDate),
-            ];
-            setBookedDates(updatedBookedDates);
-            saveBookedDates(updatedBookedDates);
-          } else {
-            toast.error(response2.data.message);
+              const updatedBookedDates = [
+                ...bookedDates,
+                new Date(payload2.eventDate),
+              ];
+              setBookedDates(updatedBookedDates);
+              saveBookedDates(updatedBookedDates);
+            } else {
+              toast.error(response2.data.message);
+            }
+          } catch (e) {
+            toast.warning(e?.response?.data?.message);
           }
-         }catch(e){
-          toast.warning(e?.response?.data?.message)
-         }
         } else {
           toast.error(response1.data.message);
         }
@@ -206,8 +206,41 @@ function EventBooking() {
       message: "",
     },
     validationSchema: validationSchema2,
-    onSubmit: (values) => {
-      console.log("Contact Datas:", values);
+    onSubmit: async (data) => {
+      const payload1 = {
+        company_id: 28,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        phone: data.phoneNumber,
+        email: data.email,
+        description_info: data.message,
+        company: "MIT Space",
+        lead_status: "PENDING",
+      };
+      // data.Booking_date = formatSelectedDate();
+
+      setLoadIndicator(true);
+      try {
+        const response1 = await axios.post(
+          `https://crmlah.com/ecscrm/api/newClient`,
+          payload1,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response1.status === 201) {
+          toast.success(response1.data.message);
+          formik2.resetForm();
+        } else {
+          toast.error(response1.data.message);
+        }
+      } catch (error) {
+        toast.error("Failed: " + error.message);
+      } finally {
+        setLoadIndicator(false);
+      }
     },
   });
 
@@ -303,8 +336,9 @@ function EventBooking() {
                           {/* <FaRegClock /> */}
                           <span className="fw-medium mx-1">
                             Choose your preferred date to make your event
-                            unforgettable.<br /><br /> Select a date and secure your spot
-                            today!
+                            unforgettable.
+                            <br />
+                            <br /> Select a date and secure your spot today!
                           </span>
                         </div>
                         {/* <div className="logoText d-flex align-items-center py-2">
@@ -717,10 +751,10 @@ function EventBooking() {
             </div>
             <div className="col-lg-6 col-12 text-start mt-5 px-5">
               <h1 className="fw-bold mb-3">
-                Get in Touch with Us for Your ECS Cloud Training Needs
+                Get in Touch with Us for Your MIT Space Training Needs
               </h1>
               <p className="fw-medium paraText mb-4">
-                Our ECS Cloud Training System operates with precision and speed,
+                Our MIT Space Training System operates with precision and speed,
                 effortlessly handling the movement and storage of pallets within
                 your warehouse.
               </p>
@@ -733,7 +767,7 @@ function EventBooking() {
                   <BiSolidQuoteRight size={70} color="#e41111" />
                 </span>
                 <h5 className="fw-bold" style={{ marginLeft: "0.5rem" }}>
-                  Streamline Your Warehouse Operations with ECS Cloud Training!
+                  Streamline Your Warehouse Operations with MIT Space Training!
                 </h5>
               </div>
               <div className="card" style={{ borderRadius: "30px" }}>

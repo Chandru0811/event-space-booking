@@ -74,7 +74,7 @@ const eventBookingUserTemplate = async (data, companyId) => {
         </table>
         <div class="invoice">
           <h1 style="color: black;">Hi, ${data.firstName + data.lastName}</h1>
-          <p style="margin: 2rem 0;">Thank you for booking your event with <strong>${"ECS Cloud"}</strong>!</p>
+          <p style="margin: 2rem 0;">Thank you for booking your event with <strong>MIT Space</strong>!</p>
           <p>We're excited to confirm your booking for the following event:</p>
           <ul>
             <li><strong>Date:</strong> ${data.date || "--"}</li>
