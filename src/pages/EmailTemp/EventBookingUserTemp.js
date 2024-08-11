@@ -2,7 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const eventBookingUserTemplate = async (data, companyId) => {
- 
+  //  console.log("Data is ", data);
+
   const mailContent = `
     <!DOCTYPE html>
     <html lang="en">
@@ -72,17 +73,17 @@ const eventBookingUserTemplate = async (data, companyId) => {
           </tr>
         </table>
         <div class="invoice">
-          <h1 style="color: black;">Hi, ${data.first_name + data.last_name}</h1>
+          <h1 style="color: black;">Hi, ${data.firstName + data.lastName}</h1>
           <p style="margin: 2rem 0;">Thank you for booking your event with <strong>${"ECS Cloud"}</strong>!</p>
           <p>We're excited to confirm your booking for the following event:</p>
           <ul>
-            <li><strong>Event Name:</strong> ${"--"}</li>
             <li><strong>Date:</strong> ${data.date || "--"}</li>
-            <li><strong>Time:</strong> ${data.time || "--"} (Asia/Singapore)</li>
+            <li><strong>Time:</strong> ${
+              data.time || "09:00 am"
+            } (Asia/Singapore)</li>
             <li><strong>Location:</strong> 111 North Bridge Road #06-34 Peninsula Plaza, Singapore 179098</li>
           </ul>
-          <p>If you need to reschedule or cancel your booking, you can do so by clicking the link below:</p>
-          <p>We're looking forward to having you at the event! If you have any questions, feel free to reach out to us at ${"Company Mail"}.</p>
+          <p>We're looking forward to having you at the event! If you have any questions, feel free to reach out to us at connect@mitspace.sg.</p>
           <p style="margin: 0 0 2rem 0;">Powered by ECS</p>
           <hr />
         </div>
@@ -91,12 +92,15 @@ const eventBookingUserTemplate = async (data, companyId) => {
     </html>`;
 
   try {
-    const response = await axios.post(`http://13.213.208.92:8080/ecscrm/api/sendMail`, {
-      toMail: data.email,
-      fromMail: "noreply@example.com", // Use a valid sender email
-      subject: `Event Booking Confirmation: ${data.eventName || "--"}`,
-      htmlContent: mailContent,
-    });
+    const response = await axios.post(
+      `https://crmlah.com/ecscrm/api/sendMail`,
+      {
+        toMail: data.businessEmail,
+        fromMail: "noreply@example.com", // Use a valid sender email
+        subject: `Event Booking Confirmation`,
+        htmlContent: mailContent,
+      }
+    );
 
     if (response.status === 200) {
       toast.success(response.data.message);

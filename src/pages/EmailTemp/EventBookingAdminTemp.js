@@ -2,8 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const newEventAlertAdminTemplate = async (data, companyId) => {
-
-    const mailContent = `
+  // console.log("Data is ", data);
+  const mailContent = `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -52,63 +52,76 @@ const newEventAlertAdminTemplate = async (data, companyId) => {
           }
         </style>
       </head>
-      <body>
-        <div class="invoice-box">
+     <body>
+  <div class="invoice-box">
+    <table>
+      <tr class="top">
+        <td colspan="2">
           <table>
-            <tr class="top">
-              <td colspan="2">
-                <table>
-                  <tr>
-                    <td class="title">
-                      <img
-                        src='https://mitspace.sg/wp-content/uploads/2024/04/cropped-MITSplogofinal-scaled-1.jpg'
-                        style="width: 75%; max-width: 180px"
-                        alt="Logo"
-                      />
-                    </td>
-                  </tr>
-                </table>
+            <tr>
+              <td class="title">
+                <img
+                  src="https://mitspace.sg/wp-content/uploads/2024/04/cropped-MITSplogofinal-scaled-1.jpg"
+                  style="width: 75%; max-width: 180px"
+                  alt="Logo"
+                />
               </td>
             </tr>
           </table>
-          <div class="invoice">
-            <h1 style="color: black;">Hello Sir</h1>
-            <p style="margin: 2rem 0;">We wanted to inform you that a new event has been registered in the system:</p>
-            <ul>
-              <li><strong>Event Name:</strong> ${data.eventName || "Event Name"}</li>
-              <li><strong>Date:</strong> ${data.date || "Event Date"}</li>
-              <li><strong>Time:</strong> ${data.time || "Event Time"} (Asia/Singapore)</li>
-              <li><strong>Registered By:</strong> ${data.first_name + data.last_name || "--"}</li>
-            </ul>
-            <p>Please review the event details in the admin panel and ensure all necessary preparations are made.</p>
-            <p>If you have any questions, feel free to reach out to us at ${"Company Mail"}.</p>
-            <p style="margin: 0 0 2rem 0;">Best regards,</p>
-            <p style="margin: 0;">${"Company Name"} Team</p>
-            <p style="margin: 0 0 2rem 0;">Powered by ECS</p>
-            <hr />
-          </div>
-        </div>
-      </body>
+        </td>
+      </tr>
+    </table>
+    <div class="invoice">
+      <h1 style="color: black;">Hello Sir/Madam,</h1>
+      <p style="margin: 2rem 0;">
+        We wanted to inform you that a new event booking has been received:
+      </p>
+      <ul>
+        <li><strong>Date:</strong> ${data.date || "Event Date"}</li>
+        <li><strong>Time:</strong> ${
+          "09:00 am" || "Event Time"
+        } (Asia/Singapore)</li>
+        <li><strong>Registered By:</strong> ${
+          data.firstName + " " + data.lastName || "--"
+        }</li>
+      </ul>
+      <p>
+        Please review the event details on
+        <a href="https://crmlah.com" target="_blank">crmlah.com</a> and ensure all necessary arrangements are made.
+      </p>
+      <p>
+        If you have any questions, feel free to reach out to us at connect@mitspace.sg.
+      </p>
+      <p style="margin: 0 0 2rem 0;">Best regards,</p>
+      <p style="margin: 0;">MIT Space Team</p>
+      <p style="margin: 0 0 2rem 0;">Powered by ECS</p>
+      <hr />
+    </div>
+  </div>
+</body>
+
       </html>`;
-  
-    try {
-      const response = await axios.post(`http://13.213.208.92:8080/ecscrm/api/sendMail`, {
-        toMail: data.email,
+
+  try {
+    const response = await axios.post(
+      `https://crmlah.com/ecscrm/api/sendMail`,
+      {
+        toMail: "chandru08112000@gmail.com",
         fromMail: "noreply@example.com", // Use a valid sender email
-        subject: `New Event Registered: ${data.eventName || "--"}`,
+        subject: `New Event Registered`,
         htmlContent: mailContent,
-      });
-  
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        toast.success("Mail sent successfully");
-      } else {
-        toast.error(response.data.message);
       }
-    } catch (error) {
-      toast.error("Mail not sent");
+    );
+
+    if (response.status === 200) {
+      console.log(response.data.message);
+      console.log("Mail sent successfully");
+    } else {
+      toast.error(response.data.message);
     }
-  };
-  
-  export default newEventAlertAdminTemplate;
-  
+  } catch (error) {
+    toast.error("Mail not sent");
+  }
+};
+
+export default newEventAlertAdminTemplate;
