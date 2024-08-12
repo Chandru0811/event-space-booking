@@ -106,7 +106,7 @@ const newEventAlertAdminTemplate = async (data, companyId) => {
     const response = await axios.post(
       `https://crmlah.com/ecscrm/api/sendMail`,
       {
-        toMail: "chandru08112000@gmail.com",
+        toMail: "raaj@ecscloudinfotech.com",
         fromMail: "noreply@example.com", // Use a valid sender email
         subject: `New Event Registered`,
         htmlContent: mailContent,

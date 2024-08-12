@@ -422,12 +422,11 @@ function EventBooking() {
                                 </label>
                                 <input
                                   type="text"
-                                  className={`form-control ${
-                                    formik1.touched.firstName &&
+                                  className={`form-control ${formik1.touched.firstName &&
                                     formik1.errors.firstName
-                                      ? "is-invalid"
-                                      : ""
-                                  }`}
+                                    ? "is-invalid"
+                                    : ""
+                                    }`}
                                   {...formik1.getFieldProps("firstName")}
                                 />
                                 {formik1.touched.firstName &&
@@ -444,12 +443,11 @@ function EventBooking() {
                                 </label>
                                 <input
                                   type="text"
-                                  className={`form-control ${
-                                    formik1.touched.lastName &&
+                                  className={`form-control ${formik1.touched.lastName &&
                                     formik1.errors.lastName
-                                      ? "is-invalid"
-                                      : ""
-                                  }`}
+                                    ? "is-invalid"
+                                    : ""
+                                    }`}
                                   {...formik1.getFieldProps("lastName")}
                                 />
                                 {formik1.touched.lastName &&
@@ -465,12 +463,11 @@ function EventBooking() {
                                 </label>
                                 <input
                                   type="text"
-                                  className={`form-control ${
-                                    formik1.touched.businessEmail &&
+                                  className={`form-control ${formik1.touched.businessEmail &&
                                     formik1.errors.businessEmail
-                                      ? "is-invalid"
-                                      : ""
-                                  }`}
+                                    ? "is-invalid"
+                                    : ""
+                                    }`}
                                   {...formik1.getFieldProps("businessEmail")}
                                 />
                                 {formik1.touched.businessEmail &&
@@ -487,12 +484,11 @@ function EventBooking() {
                                 </label>
                                 <input
                                   type="text"
-                                  className={`form-control ${
-                                    formik1.touched.phone &&
+                                  className={`form-control ${formik1.touched.phone &&
                                     formik1.errors.phone
-                                      ? "is-invalid"
-                                      : ""
-                                  }`}
+                                    ? "is-invalid"
+                                    : ""
+                                    }`}
                                   {...formik1.getFieldProps("phone")}
                                 />
                                 {formik1.touched.phone &&
@@ -560,12 +556,12 @@ function EventBooking() {
                     <p className="paraText mb-3">
                       For further details check your mail.
                     </p>
-                    {/* <button
+                    <button
                       className="btn btn-primary"
                       onClick={handleNewBookingClick}
                     >
                       New Booking
-                    </button> */}
+                    </button>
                   </div>
                 )}
               </div>
@@ -657,11 +653,10 @@ function EventBooking() {
                     </label>
                     <input
                       type="text"
-                      className={`form-control ${
-                        formik2.touched.firstName && formik2.errors.firstName
-                          ? "is-invalid"
-                          : ""
-                      }`}
+                      className={`form-control ${formik2.touched.firstName && formik2.errors.firstName
+                        ? "is-invalid"
+                        : ""
+                        }`}
                       {...formik2.getFieldProps("firstName")}
                     />
                     {formik2.touched.firstName && formik2.errors.firstName && (
@@ -676,11 +671,10 @@ function EventBooking() {
                     </label>
                     <input
                       type="text"
-                      className={`form-control ${
-                        formik2.touched.lastName && formik2.errors.lastName
-                          ? "is-invalid"
-                          : ""
-                      }`}
+                      className={`form-control ${formik2.touched.lastName && formik2.errors.lastName
+                        ? "is-invalid"
+                        : ""
+                        }`}
                       {...formik2.getFieldProps("lastName")}
                     />
                     {formik2.touched.lastName && formik2.errors.lastName && (
@@ -695,11 +689,10 @@ function EventBooking() {
                     </label>
                     <input
                       type="text"
-                      className={`form-control ${
-                        formik2.touched.email && formik2.errors.email
-                          ? "is-invalid"
-                          : ""
-                      }`}
+                      className={`form-control ${formik2.touched.email && formik2.errors.email
+                        ? "is-invalid"
+                        : ""
+                        }`}
                       {...formik2.getFieldProps("email")}
                     />
                     {formik2.touched.email && formik2.errors.email && (
@@ -714,12 +707,11 @@ function EventBooking() {
                     </label>
                     <input
                       type="text"
-                      className={`form-control ${
-                        formik2.touched.phoneNumber &&
+                      className={`form-control ${formik2.touched.phoneNumber &&
                         formik2.errors.phoneNumber
-                          ? "is-invalid"
-                          : ""
-                      }`}
+                        ? "is-invalid"
+                        : ""
+                        }`}
                       {...formik2.getFieldProps("phoneNumber")}
                     />
                     {formik2.touched.phoneNumber &&
@@ -742,7 +734,14 @@ function EventBooking() {
                       type="submit"
                       className="btn btn-danger py-2"
                       style={{ width: "100%" }}
+                      disabled={loadIndicator}
                     >
+                      {loadIndicator && (
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          aria-hidden="true"
+                        ></span>
+                      )}
                       Send
                     </button>
                   </div>
